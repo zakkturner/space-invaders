@@ -1,24 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable default-case */
+import React, { useState, useEffect, useCallback, useRef } from "react";
+
+import "./App.scss";
 
 function App() {
+  const [x, setX] = useState(0);
+  const [width, setWidth] = useState(0);
+  let container = useRef(null);
+
+  // listen for key clicks
+  const keyListen = useCallback(
+    (e) => {
+      if (e.keyCode === 37) {
+        setX(x - 10);
+        if (x <= 0) {
+          setX(x + 2);
+        }
+      }
+      if (e.keyCode === 39) {
+        setX(x + 10);
+        if (x >= width - 50) {
+          setX(x - 2);
+        }
+      }
+    },
+    [x, width]
+  );
+
+  // add event listener when component mounts
+  useEffect(() => {
+    setWidth(container.offsetWidth);
+    console.log(width);
+    window.addEventListener("keydown", keyListen);
+    return () => {
+      window.removeEventListener("keydown", keyListen);
+    };
+  }, [keyListen]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="container" id="container" ref={(el) => (container = el)}>
+        <div className="ship-container" style={{ left: x }} id="ship">
+          <img src="/img/ship.png" alt="ship" className="ship" />
+        </div>
+      </div>
     </div>
   );
 }
