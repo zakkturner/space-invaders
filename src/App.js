@@ -5,10 +5,9 @@ import "./App.scss";
 
 function App() {
   const [x, setX] = useState(0);
-  // let [laserY, setY] = useState(0);
+  let [laserY, setY] = useState(0);
   const [width, setWidth] = useState(0);
   let container = useRef(null);
-  // let laser = useRef(null);
   // listen for key clicks
   const keyListen = useCallback(
     (e) => {
@@ -24,15 +23,16 @@ function App() {
           setX(x - 2);
         }
       }
+      if (e.keyCode === 32) {
+        setY(laserY - 50);
+
+        setInterval(() => {
+          setY(laserY - 100);
+        }, 1000);
+      }
     },
-    [x, width]
+    [x, laserY, width]
   );
-
-  // const shoot = () =>{
-  //   if(e.keyCode === 32){
-
-  //   }
-  // }
 
   // add event listener when component mounts
   useEffect(() => {
@@ -47,12 +47,7 @@ function App() {
     <div className="App">
       <div className="container" id="container" ref={(el) => (container = el)}>
         <div className="ship-container" style={{ left: x }} id="ship">
-          <div
-            className="ship-laser"
-            // ref={(el) => {
-            //   laser = el;
-            // }}
-          ></div>
+          <div className="ship-laser" style={{ top: laserY }}></div>
           <img src="/img/ship.png" alt="ship" className="ship" />
         </div>
       </div>
