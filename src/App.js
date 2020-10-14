@@ -35,7 +35,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", keyListen);
     };
-  }, [keyListen]);
+  }, [keyListen, width]);
   return (
     <div className="App">
       <div className="container" id="container" ref={(el) => (container = el)}>
